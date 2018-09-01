@@ -133,6 +133,10 @@ public class AddressBook {
     private static final String COMMAND_EXIT_DESC = "Exits the program.";
     private static final String COMMAND_EXIT_EXAMPLE = COMMAND_EXIT_WORD;
 
+    private static final String COMMAND_RANDOM_WORD = "random";
+    private static final String COMMAND_RANDOM_DESC = "Display a random contact.";
+    private static final String COMMAND_RANDOM_EXAMPLE = COMMAND_RANDOM_WORD;
+
     private static final String DIVIDER = "===================================================";
 
 
@@ -381,6 +385,8 @@ public class AddressBook {
             return executeClearAddressBook();
         case COMMAND_HELP_WORD:
             return getUsageInfoForAllCommands();
+        case COMMAND_RANDOM_WORD:
+            return executeRandomPerson();
         case COMMAND_EXIT_WORD:
             executeExitProgramRequest();
         default:
@@ -454,6 +460,14 @@ public class AddressBook {
         final ArrayList<String[]> personsFound = getPersonsWithNameContainingAnyKeyword(keywords);
         showToUser(personsFound);
         return getMessageForPersonsDisplayedSummary(personsFound);
+    }
+
+    private static String executeRandomPerson() {
+        final ArrayList<String[]> allPersons = getAllPersonsInAddressBook();
+        ArrayList<String[]> randomPerson = new ArrayList<String[]>();
+        randomPerson.add(allPersons.get((int)(Math.floor(Math.random() * (allPersons.size()-1)))));
+        showToUser(randomPerson);
+        return getMessageForPersonsDisplayedSummary(randomPerson);
     }
 
     /**
@@ -1087,6 +1101,7 @@ public class AddressBook {
                 + getUsageInfoForViewCommand() + LS
                 + getUsageInfoForDeleteCommand() + LS
                 + getUsageInfoForClearCommand() + LS
+                + getUsageInfoForRandomCommand() + LS
                 + getUsageInfoForExitCommand() + LS
                 + getUsageInfoForHelpCommand();
     }
@@ -1134,6 +1149,12 @@ public class AddressBook {
     private static String getUsageInfoForExitCommand() {
         return String.format(MESSAGE_COMMAND_HELP, COMMAND_EXIT_WORD, COMMAND_EXIT_DESC)
                 + String.format(MESSAGE_COMMAND_HELP_EXAMPLE, COMMAND_EXIT_EXAMPLE);
+    }
+
+    /** Returns the string for showing 'random' command usage instruction */
+    private static String getUsageInfoForRandomCommand() {
+        return String.format(MESSAGE_COMMAND_HELP, COMMAND_RANDOM_WORD, COMMAND_RANDOM_DESC)
+                + String.format(MESSAGE_COMMAND_HELP_EXAMPLE, COMMAND_RANDOM_EXAMPLE);
     }
 
 
